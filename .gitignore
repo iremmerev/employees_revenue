@@ -1,129 +1,44 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
+file = open("employees_revenue.txt", "r")  # Read the "employees_revenue.txt" file
+data = file.read()  # Read the data from the file
+lines = data.splitlines()  # Split the data into lines
 
-# C extensions
-*.so
+names = []  # List to store names
+call_numbers = []  # List to store call numbers
+average_deal_sizes = []  # List to store average deal sizes
+revenues = []  # List to store revenues
 
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-pip-wheel-metadata/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+def clean_extract():
+    for employee in lines:
+        employee = employee.strip(" ")  # Remove leading and trailing spaces
+        employee = employee.lower()  # Convert to lowercase
+        employee = employee.capitalize()  # Capitalize the first letter of each word
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+        split_employee = employee.split(" ")  # Split the employee data by spaces
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+        name = split_employee[0]  # Extract the name
+        call_number = split_employee[2]  # Extract the call number
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
+        for i in split_employee:
+            if "$" in i:  # If a string contains "$"
+                average_deal_size = i.split("$")[0]  # Extract the average deal size
 
-# Translations
-*.mo
-*.pot
+                dollars_index = split_employee.index("dollars")  # Find the index of "dollars"
+                revenue_index = dollars_index - 1  # Calculate the index of the revenue
+                revenue = split_employee[revenue_index]  # Extract the revenue
 
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
+                average_deal_size = int(average_deal_size)  # Convert average deal size to integer
+                call_number = int(call_number)  # Convert call number to integer
+                revenue = int(revenue)  # Convert revenue to integer
 
-# Flask stuff:
-instance/
-.webassets-cache
+                names.append(name)  # Append name to names list
+                call_numbers.append(call_number)  # Append call number to call_numbers list
+                average_deal_sizes.append(average_deal_size)  # Append average deal size to average_deal_sizes list
+                revenues.append(revenue)  # Append revenue to revenues list
 
-# Scrapy stuff:
-.scrapy
+    return names, call_numbers, average_deal_sizes, revenues
 
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-.python-version
-
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
-
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
+names, call_numbers, average_deal_sizes, revenues = clean_extract()  # Call the clean_extract() function
+print("Name:", names)  # Print names list
+print("Number of calls:", call_numbers)  # Print call_numbers list
+print("Average deal size:", average_deal_sizes)  # Print average_deal_sizes list
+print("Revenues:", revenues)  # Print revenues list
